@@ -1,6 +1,8 @@
 ﻿using AspNetMVC_P324.DAL;
+using AspNetMVC_P324.Data;
 using AspNetMVC_P324.Models.Entities;
 using AspNetMVC_P324.Models.ViewModels;
+using AspNetMVC_P324.Services;
 using AspNetMVC_P324.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,16 +13,19 @@ namespace AspNetMVC_P324.Controllers
     public class HomeController : Controller
     {
         private readonly AppDbContext _dbContext;
-       
+        private readonly IMailServices _mailservice;
 
 
-        public HomeController(AppDbContext dbContext)
+
+        public HomeController(AppDbContext dbContext, IMailServices mailservice)
         {
             _dbContext = dbContext;
+            _mailservice = mailservice;
         }
 
         public IActionResult Index()
         {
+            
             var sliderImages = _dbContext.SliderImages.ToList();
             var slider = _dbContext.Sliders.SingleOrDefault();
             var categories = _dbContext.Categories.ToList();

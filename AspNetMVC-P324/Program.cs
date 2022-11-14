@@ -1,5 +1,7 @@
 using AspNetMVC_P324.DAL;
+using AspNetMVC_P324.Data;
 using AspNetMVC_P324.Models.Entities.IdentityModel;
+using AspNetMVC_P324.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,17 +20,21 @@ namespace AspNetMVC_P324
                 (options=> {
                     options.User.RequireUniqueEmail=true;
                     options.Password.RequireLowercase=false;
-                    options.SignIn.RequireConfirmedEmail=true;
+                    options.SignIn.RequireConfirmedEmail=false;
                     options.Password.RequireUppercase=false;
                 })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("Mailsettings"));
 
+            builder.Services.AddTransient<IMailServices, MailManager>();
             var app = builder.Build();
 
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             if (app.Environment.IsDevelopment())
             {
