@@ -1,0 +1,31 @@
+﻿@model SlideUpdateModel
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+<div class="col-sm-12 col-md-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <form class="forms-sample" method="post" asp-action="Update">
+                            <h6 class="mb-4">Input Group</h6>
+                            <div class="input-group mb-3  ">
+                                <span class="input-group-text" id="basic-addon1"></span>
+                                 
+                                <input asp-for="Title"  type="text" class="form-control" placeholder="Title" aria-label="Username"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                            <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1"></span>
+                                <input asp-for="Subtitle" type="text" class="form-control" placeholder="SubTitle" aria-label="Username"
+                           aria-describedby="basic-addon1">
+                            </div>
+                           <div class="input-group mb-3">
+                              <span class="input-group-text" id="basic-addon1"></span>
+                              <input type="file" class="form-control" placeholder="SignatureImg" aria-label="Username"
+                                   aria-describedby="basic-addon1">
+                                </div>
+
+                            
+                          <button type="submit" class="btn btn-success m-2">Submit</button>
+                             </form>
+                        </div>
+                    </div>
+</div></div>

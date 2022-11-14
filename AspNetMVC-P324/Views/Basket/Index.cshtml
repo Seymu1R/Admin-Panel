@@ -1,0 +1,64 @@
+﻿<main>
+    <section id="product-list-title">
+        <div class="container py-4">
+            <div class="row py-5">
+                <div class="col-12">
+                    <h1>Basket List List</h1>
+                    <table id="add-basket">
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                        
+                         
+                           
+                       
+                       
+                        
+                       
+                        
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="product-list">
+        <div class="container">
+            <div class="row">
+            </div>
+        </div>
+    </section>
+    <script>
+        function getBasket() {
+            fetch('https://localhost:7227/Home/ShowBasket')
+                .then((response) => response.json())
+                .then(data => {
+                    
+                    let y = ``                   
+                    
+                     for (let x of data.products) {
+                    
+                         y=`
+                                 <tr>
+                                    <th>${x.name}</th>
+                                    <th>${x.price}</th>
+                                            <th>${data.basketCookieVM.find(d=>d.id==x.id).quantity}</th>
+                                    <th>${data.totalPrice}</th>
+                                </tr>
+
+                         `
+                         document.getElementById("add-basket").innerHTML += y;
+                      }
+
+                  
+
+                })
+                
+
+        }
+        getBasket();
+    </script>
+</main>
