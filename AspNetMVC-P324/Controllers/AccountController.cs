@@ -110,7 +110,7 @@ namespace AspNetMVC_P324.Controllers
                 ModelState.AddModelError("", "Bele Email movcud deyil");
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(existuser);
-            var resetlink = Url.Action(nameof(ResetPasword), "Accaunt", new { email = model.Email, token },Request.Scheme,Request.Host.ToString());
+            var resetlink = Url.Action(nameof(ResetPassword), "Account", new { email = model.Email, token },Request.Scheme,Request.Host.ToString());
             var mailrequest = new RequestEmail 
             {
                 ToEmail= model.Email,
@@ -122,10 +122,41 @@ namespace AspNetMVC_P324.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        public IActionResult ResetPasword(string email, string token ) 
+        public IActionResult ResetPassword(string email, string token ) 
         { 
-            var model = new ResetPasswordViewModel { Email = email, Token = token };    
-            return View(model);  
+               
+            return View(new ResetPasswordViewModel { Email = email, Token = token });  
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Email Qaydalara uygun doldurulmalidir"); 
+            }
+
+                User user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user == null)
+                    return BadRequest();
+
+                var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(Login));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                
+            
+            return View();
+
         }
     }
 }
